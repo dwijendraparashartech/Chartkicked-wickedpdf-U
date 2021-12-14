@@ -1,0 +1,61 @@
+
+<%= wicked_pdf_javascript_include_tag "https://www.gstatic.com/charts/loader.js" %>
+<%= wicked_pdf_javascript_include_tag "https://code.jquery.com/jquery-3.2.1.min.js" %>
+<%= wicked_pdf_javascript_include_tag "https://cdnjs.cloudflare.com/ajax/libs/chartkick/2.2.4/chartkick.min.js" %>
+
+<%= javascript_include_tag "http://code.jquery.com/jquery-1.10.0.min.js" %>
+<%= javascript_include_tag "http://code.jquery.com/ui/1.10.3/jquery-ui.min.js" %>
+<%= javascript_include_tag "https://www.google.com/jsapi" %>
+<%= wicked_pdf_javascript_include_tag "chartkick" %> 
+
+
+
+
+
+
+   
+<p id="notice"><%= notice %></p>
+<button id="alert">Click</button>
+<h1>Orders</h1>
+      <%= pie_chart Order.group(:status).count %>
+      <%= line_chart Order.group(:status).count %>
+      <%= link_to "PDF", orders_path(format: :pdf) %>
+<table>
+  <thead>
+    <tr>
+      <th>Price</th>
+      <th>Status</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @orders.each do |order| %>
+      <tr>
+        <td><%= order.price %></td>
+        <td><%= order.status %></td>
+        <td><%= link_to 'Show', order %></td>
+        <td><%= link_to 'Edit', edit_order_path(order) %></td>
+        <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+  
+<%= link_to 'New Order', new_order_path %>
+
+<script type="text/javascript">
+    setTimeout((function () {
+        window.status = "FLAG_FOR_PDF";
+        console.log("FLAG_FOR_PDF");
+        Object.keys(Chartkick.charts).forEach(function (key) {
+            Chartkick.charts[key].redraw();
+        });
+    }), 3000);
+
+    $("#alert").click(function(){
+      alert("The paragraph was clicked.");
+    });
+</script>
